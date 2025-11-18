@@ -3,7 +3,7 @@
 // =================================================================
 
 // Função utilitária para gerar avatares aleatórios (simulando uma foto)
-const gerarAvatar = (nome) => `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&size=80&background=00FFFF&color=1A1A1A&bold=true`; // Cor do Grafite
+const gerarAvatar = (nome) => `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&size=80&background=00FFFF&color=1A1A1A&bold=true`;
 
 const PARTICIPANTES = [
     // Total de 12 Participantes
@@ -143,7 +143,7 @@ function verificarDataLimite() {
         edicaoPermitida = true;
         overlayBloqueio.style.display = 'none';
         
-        // CORREÇÃO: Inicializa ou mantém o intervalo APENAS se não estiver ativo
+        // CORREÇÃO: Inicializa o intervalo APENAS se não estiver ativo (para torná-lo dinâmico)
         if (!timerInterval) {
             timerInterval = setInterval(iniciarContagemRegressiva, 1000); 
         }
@@ -168,7 +168,7 @@ function iniciarContagemRegressiva() {
 
     if (diferenca < 0) {
         clearInterval(timerInterval);
-        timerInterval = null; // Limpa o intervalo
+        timerInterval = null; 
         verificarDataLimite(); 
         return;
     }
@@ -190,6 +190,7 @@ function iniciarContagemRegressiva() {
 // =================================================================
 
 function renderizarSumarioFinanceiro() {
+    // Os valores serão preenchidos
     const totalArrecadado = VALOR_APOSTA_POR_PESSOA * NUMERO_PARTICIPANTES;
 
     document.getElementById('valorPalpiteDisplay').textContent = VALOR_APOSTA_POR_PESSOA.toFixed(2).replace('.', ',');
@@ -280,8 +281,94 @@ function fecharModalPalpite() {
     modal.style.display = 'none';
 }
 
+// =================================================================
+// === FUNÇÕES DE RESULTADOS E PONTUAÇÃO (sem alteração) ===========
+// =================================================================
 
-// ... [Funções de resultados (verificarModoResultados, calcularPontuacaoIndividual, renderizarPontuacao) permanecem inalteradas]
+function verificarModoResultados() {
+    const hoje = new Date();
+    const resultModeSection = document.getElementById('resultModeSection');
+    const resultDivider = document.getElementById('resultDivider');
+    
+    if (hoje > DATA_LIMITE_ENVIO) {
+        resultModeSection.style.display = 'block';
+        resultDivider.style.display = 'block';
+        
+        const gabaritoPreenchido = Object.keys(GABARITO).filter(key => GABARITO[key] !== '').length === PARTICIPANTES.length;
+        document.getElementById('gabaritoWarning').style.display = gabaritoPreenchido ? 'none' : 'block';
+        showResultsBtn.disabled = !gabaritoPreenchido;
+        
+        palpiteContainer.style.display = 'none'; 
+        document.querySelector('.section-title').style.display = 'none';
+
+        return gabaritoPreenchido;
+    }
+    
+    resultModeSection.style.display = 'none';
+    resultDivider.style.display = 'none';
+    
+    palpiteContainer.style.display = 'block'; 
+    document.querySelector('.section-title').style.display = 'block';
+
+    return false;
+}
+
+function calcularPontuacaoIndividual() {
+    if (!verificarModoResultados()) return; 
+
+    const meusPalpites = carregarMeusPalpites();
+    let acertos = 0;
+    
+    const pontuacaoDetalhada = PARTICIPANTES.map(participante => {
+        if (participante.id === usuarioLogadoId || !GABARITO[participante.id]) {
+            return null;
+        }
+
+        const meuPalpite = meusPalpites[participante.id];
+        const gabaritoCorreto = GABARITO[participante.id];
+        
+        const palpiteNome = PARTICIPANTES.find(p => p.id === meuPalpite)?.nome || 'Sem Palpite';
+        const gabaritoNome = PARTICIPANTES.find(p => p.id === gabaritoCorreto)?.nome || 'Não Definido (Erro no Gabarito)';
+        
+        const acertou = (meuPalpite && meuPalpite === gabaritoCorreto);
+        if (acertou) {
+            acertos++;
+        }
+
+        return {
+            nome: participante.nome,
+            acertou: acertou,
+            meuPalpite: palpiteNome,
+            gabarito: gabaritoNome,
+            quemTirouId: participante.id
+        };
+    }).filter(item => item !== null); 
+
+    renderizarPontuacao(acertos, pontuacaoDetalhada);
+}
+
+function renderizarPontuacao(acertos, detalhes) {
+    const myScoreDisplay = document.getElementById('myScoreDisplay');
+    myScoreDisplay.style.display = 'block';
+    
+    let html = `<h4 class="score-title">RESULTADO PARA VOCÊ:</h4>`;
+    html += `<p class="total-score-text">TOTAL DE ACERTOS: <span class="score-number">${acertos}</span> / ${detalhes.length}</p>`;
+    
+    detalhes.forEach(detalhe => {
+        const statusClass = detalhe.acertou ? 'acerto' : 'erro';
+        const statusText = detalhe.acertou ? '✅ ACERTOU!' : '❌ ERROU!';
+        
+        html += `
+            <div class="palpite-detalhe ${statusClass}">
+                <p><strong>PALPITE SOBRE ${detalhe.nome}:</strong> ${statusText}</p>
+                <p class="detalhe-text">O SEU PALPITE: **${detalhe.meuPalpite}**</p>
+                <p class="detalhe-text">O CORRETO ERA: **${detalhe.gabarito}**</p>
+            </div>
+        `;
+    });
+    
+    myScoreDisplay.innerHTML = html;
+}
 
 // =================================================================
 // === INICIALIZAÇÃO E EVENT LISTENERS =============================
@@ -290,9 +377,9 @@ function fecharModalPalpite() {
 function init() {
     renderizarSumarioFinanceiro();
     
-    // CORREÇÃO CRONÓMETRO: Inicia a contagem e a verificação de data
+    // As funções de tempo agora são chamadas em cadeia para garantir que os valores apareçam.
     verificarDataLimite(); 
-    iniciarContagemRegressiva(); // Chamada inicial para preencher os valores na hora 0
+    iniciarContagemRegressiva(); 
     
     renderizarPalpites();
     
