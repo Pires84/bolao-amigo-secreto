@@ -3,7 +3,7 @@
 // =================================================================
 
 // Função utilitária para gerar avatares aleatórios (simulando uma foto)
-const gerarAvatar = (nome) => `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&size=80&background=1DB954&color=ffffff&bold=true`;
+const gerarAvatar = (nome) => `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&size=80&background=00FFFF&color=1A1A1A&bold=true`; // Cor do Grafite
 
 const PARTICIPANTES = [
     // Total de 12 Participantes
@@ -21,16 +21,15 @@ const PARTICIPANTES = [
     { id: 'u12', nome: 'Thiago', foto: gerarAvatar('Thiago') }, 
 ];
 
-// DATA LIMITE para alterar palpites (Ano, Mês-1, Dia) - 22 de Dezembro de 2025
-// CORREÇÃO: Vamos definir o horário para 23:59:59 para garantir que o dia 22 é completo.
+// DATA LIMITE para alterar palpites - 23 de Dezembro de 2025 às 23:59:59
 const DATA_LIMITE_ENVIO = new Date(2025, 11, 23, 23, 59, 59); 
 
 // --- Configuração Financeira ---
-const VALOR_APOSTA_POR_PESSOA = 10.00; // CORREÇÃO: 10.00 por pessoa, não por palpite.
+const VALOR_APOSTA_POR_PESSOA = 10.00; // R$ 10.00 por pessoa
 
 // --- GABARITO (SOLUÇÃO CORRETA) ---
 const GABARITO = {
-    // PREENCHA ISTO SÓ DEPOIS DO EVENTO!
+    // PREENCHA ISTO SÓ DEPOIS DO EVENTO! 
     'u1': '', 'u2': '', 'u3': '', 'u4': '', 'u5': '', 'u6': '',
     'u7': '', 'u8': '', 'u9': '', 'u10': '', 'u11': '', 'u12': '',
 };
@@ -62,11 +61,7 @@ const hoursDisplay = document.getElementById('hours');
 const minutesDisplay = document.getElementById('minutes');
 const secondsDisplay = document.getElementById('seconds');
 const showResultsBtn = document.getElementById('showResultsBtn');
-const searchInput = document.getElementById('search-input');
 const exportBtn = document.getElementById('exportBtn');
-const valorPalpiteDisplay = document.getElementById('valorPalpiteDisplay');
-
-let participanteAdivinhadoId = null; 
 
 
 // =================================================================
@@ -96,9 +91,6 @@ function salvarPalpite(quemTirouId, amigoSecretoId) {
     renderizarPalpites(); 
 }
 
-/**
- * CORREÇÃO: Exportação Limpa. Copia os dados brutos para a área de transferência.
- */
 function exportarPalpites() {
     const meusPalpites = carregarMeusPalpites();
     const nomeUsuario = PARTICIPANTES.find(p => p.id === usuarioLogadoId)?.nome || 'Desconhecido';
@@ -112,16 +104,13 @@ function exportarPalpites() {
     
     const jsonString = JSON.stringify(dadosExportados, null, 2);
 
-    // 1. Cria um elemento temporário para selecionar e copiar
     const tempElement = document.createElement('textarea');
     tempElement.value = jsonString;
     document.body.appendChild(tempElement);
     
-    // 2. Seleciona o conteúdo
     tempElement.select();
-    tempElement.setSelectionRange(0, 99999); // Para mobile
+    tempElement.setSelectionRange(0, 99999); 
     
-    // 3. Executa o comando de cópia
     try {
         document.execCommand('copy');
         alert(`Dados de ${nomeUsuario} copiados para a área de transferência! Cole em um ficheiro de texto.`);
@@ -130,10 +119,7 @@ function exportarPalpites() {
         console.error('Falha na cópia:', err);
     }
     
-    // 4. Remove o elemento temporário
     document.body.removeChild(tempElement);
-
-    // Remove a área de exportação antiga se existir
     document.getElementById('export-output')?.remove();
 }
 
@@ -149,10 +135,21 @@ function verificarDataLimite() {
         edicaoPermitida = false;
         overlayBloqueio.style.display = 'flex';
         clearInterval(timerInterval);
+        
+        countdownTimer.style.display = 'none';
+        document.getElementById('countdown-finished').style.display = 'block';
+
     } else {
         edicaoPermitida = true;
         overlayBloqueio.style.display = 'none';
-        timerInterval = timerInterval || setInterval(iniciarContagemRegressiva, 1000); // CORREÇÃO: Garante que o timer inicia
+        
+        // CORREÇÃO: Inicializa ou mantém o intervalo APENAS se não estiver ativo
+        if (!timerInterval) {
+            timerInterval = setInterval(iniciarContagemRegressiva, 1000); 
+        }
+        
+        countdownTimer.style.display = 'block';
+        document.getElementById('countdown-finished').style.display = 'none';
     }
     
     dataLimiteDisplay.textContent = DATA_LIMITE_ENVIO.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -171,16 +168,10 @@ function iniciarContagemRegressiva() {
 
     if (diferenca < 0) {
         clearInterval(timerInterval);
+        timerInterval = null; // Limpa o intervalo
         verificarDataLimite(); 
-        // Exibe "Prazo Encerrado!"
-        countdownTimer.style.display = 'none';
-        document.getElementById('countdown-finished').style.display = 'block';
         return;
     }
-    
-    // Esconde "Prazo Encerrado!" e mostra o timer
-    countdownTimer.style.display = 'block';
-    document.getElementById('countdown-finished').style.display = 'none';
 
     const dias = Math.floor(diferenca / umDia);
     const horas = Math.floor((diferenca % umDia) / umaHora);
@@ -199,12 +190,11 @@ function iniciarContagemRegressiva() {
 // =================================================================
 
 function renderizarSumarioFinanceiro() {
-    // CORREÇÃO: R$ 10.00 por pessoa * Total de Pessoas
     const totalArrecadado = VALOR_APOSTA_POR_PESSOA * NUMERO_PARTICIPANTES;
 
     document.getElementById('valorPalpiteDisplay').textContent = VALOR_APOSTA_POR_PESSOA.toFixed(2).replace('.', ',');
     document.getElementById('numParticipantesDisplay').textContent = NUMERO_PARTICIPANTES;
-    document.getElementById('numPalpitesDisplay').textContent = NUMERO_PARTICIPANTES - 1; // Palpites por pessoa (total - 1)
+    document.getElementById('numPalpitesDisplay').textContent = NUMERO_PARTICIPANTES - 1; 
     
     document.getElementById('premioTotalDisplay').textContent = totalArrecadado.toFixed(2).replace('.', ',');
 }
@@ -229,7 +219,7 @@ function renderizarPalpites() {
             <div class="palpite-info">
                 <div>
                     <p class="palpite-quem-tirou">${participante.nome}</p>
-                    ${isSelf ? '<p style="color: #FF4500; font-weight: bold; font-size: 12px;">(És tu! Palpite bloqueado.)</p>' : ''}
+                    ${isSelf ? '<p style="color: #FF00FF; font-weight: bold; font-size: 12px;">(És tu! Palpite bloqueado.)</p>' : ''}
                 </div>
                 <p class="palpite-atual">${palpiteNome} ${!isSelf && !edicaoPermitida ? '🔒' : (!isSelf ? '➡️' : '')}</p>
             </div>
@@ -241,13 +231,8 @@ function renderizarPalpites() {
 
         palpiteContainer.appendChild(card);
     });
-    
-    filtrarPalpites();
 }
 
-/**
- * CORREÇÃO: Impede que o "Amigo Secreto" escolhido seja atribuído a outra pessoa.
- */
 function abrirModalPalpite(id, nome) {
     if (!edicaoPermitida) return;
 
@@ -255,51 +240,35 @@ function abrirModalPalpite(id, nome) {
     quemTirouNomeDisplay.textContent = nome;
     listaAmigosSecretos.innerHTML = ''; 
     
-    // 1. Encontra todos os palpites do utilizador atual
     const meusPalpites = carregarMeusPalpites();
     const amigosSecretosJaEscolhidos = Object.values(meusPalpites);
 
-    // 2. Filtra a lista: O participante 'id' não pode tirar a si mesmo E não pode ter sido escolhido por outro palpite
-    const amigosParaPalpitar = PARTICIPANTES.filter(amigo => {
-        // Regra 1: Não pode ser ele próprio
-        const naoESiProprio = amigo.id !== id;
-        
-        // Regra 2: Se o amigo não for o palpite atual para 'id', ele não pode estar na lista de já escolhidos
-        const naoFoiEscolhido = (amigo.id === meusPalpites[id]) || !amigosSecretosJaEscolhidos.includes(amigo.id);
-        
-        return naoESiProprio && naoFoiEscolhido;
-    });
-
-    // 3. Cria botões de opção
     PARTICIPANTES.forEach(amigo => { 
         const btn = document.createElement('button');
         btn.textContent = `Acho que é **${amigo.nome}**`;
         
-        const isAvailable = amigosParaPalpitar.some(a => a.id === amigo.id);
-
-        if (isAvailable) {
+        const naoESiProprio = amigo.id !== id;
+        const isCurrentChoice = amigo.id === meusPalpites[id];
+        const isChosenByOther = amigosSecretosJaEscolhidos.includes(amigo.id) && !isCurrentChoice;
+        
+        if (naoESiProprio && !isChosenByOther) {
             btn.addEventListener('click', () => {
                 salvarPalpite(participanteAdivinhadoId, amigo.id);
                 fecharModalPalpite();
             });
+            if (isCurrentChoice) {
+                 btn.textContent += " (Atual)";
+            }
         } else {
-            // Se o palpite for o atual, está OK. Se não for, está bloqueado.
-            if (amigo.id !== meusPalpites[id]) {
-                btn.disabled = true;
-                btn.textContent += " (Já Escolhido)";
+            if (naoESiProprio) {
+                 btn.disabled = true;
+                 btn.textContent += " (Já Escolhido)";
             } else {
-                 btn.addEventListener('click', () => {
-                    salvarPalpite(participanteAdivinhadoId, amigo.id);
-                    fecharModalPalpite();
-                });
+                 btn.disabled = true;
+                 btn.textContent += " (Não é possível)";
             }
         }
         
-        // Se for a escolha atual, marca
-        if (amigo.id === meusPalpites[id]) {
-             btn.textContent += " (Atual)";
-        }
-
         listaAmigosSecretos.appendChild(btn);
     });
 
@@ -307,25 +276,12 @@ function abrirModalPalpite(id, nome) {
 }
 
 function fecharModalPalpite() {
-    modal.style.display = 'none';
     participanteAdivinhadoId = null;
+    modal.style.display = 'none';
 }
 
-function filtrarPalpites() {
-    const termo = searchInput.value.toLowerCase();
-    const cards = document.querySelectorAll('.palpite-card');
-    
-    cards.forEach(card => {
-        const nomeParticipante = card.querySelector('.palpite-quem-tirou').textContent.toLowerCase();
-        
-        if (nomeParticipante.includes(termo)) {
-            card.style.display = 'flex'; 
-        } else {
-            card.style.display = 'none'; 
-        }
-    });
-}
 
+// ... [Funções de resultados (verificarModoResultados, calcularPontuacaoIndividual, renderizarPontuacao) permanecem inalteradas]
 
 // =================================================================
 // === INICIALIZAÇÃO E EVENT LISTENERS =============================
@@ -334,8 +290,9 @@ function filtrarPalpites() {
 function init() {
     renderizarSumarioFinanceiro();
     
-    // Inicia a contagem regressiva e a verificação de data
+    // CORREÇÃO CRONÓMETRO: Inicia a contagem e a verificação de data
     verificarDataLimite(); 
+    iniciarContagemRegressiva(); // Chamada inicial para preencher os valores na hora 0
     
     renderizarPalpites();
     
@@ -355,7 +312,6 @@ function init() {
         document.getElementById('export-output')?.remove(); 
     });
     
-    searchInput.addEventListener('input', filtrarPalpites);
     exportBtn.addEventListener('click', exportarPalpites);
     showResultsBtn.addEventListener('click', calcularPontuacaoIndividual);
 
@@ -365,10 +321,6 @@ function init() {
             fecharModalPalpite();
         }
     });
-    
-    // Funções de resultados (deixadas fora da correção para focar nas funcionais)
-    // ... [As funções verificarModoResultados, calcularPontuacaoIndividual e renderizarPontuacao permanecem sem alteração] ...
 }
 
 document.addEventListener('DOMContentLoaded', init);
-
