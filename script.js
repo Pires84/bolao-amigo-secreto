@@ -21,8 +21,8 @@ const PARTICIPANTES = [
     { id: 'u12', nome: 'Thiago', foto: gerarAvatar('Thiago') }, 
 ];
 
-// DATA LIMITE para alterar palpites (Ano, Mês-1, Dia) - 23 de Dezembro de 2025
-// CORREÇÃO: Vamos definir o horário para 23:59:59 para garantir que o dia 23 é completo.
+// DATA LIMITE para alterar palpites (Ano, Mês-1, Dia) - 22 de Dezembro de 2025
+// CORREÇÃO: Vamos definir o horário para 23:59:59 para garantir que o dia 22 é completo.
 const DATA_LIMITE_ENVIO = new Date(2025, 11, 23, 23, 59, 59); 
 
 // --- Configuração Financeira ---
@@ -371,3 +371,4 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
