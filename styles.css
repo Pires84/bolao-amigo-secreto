@@ -1,11 +1,17 @@
+/* ================================================================= */
+/* === STYLES.CSS: TEMA SPOTIFY (DARK MODE) ======================== */
+/* ================================================================= */
+
 :root {
-    --primary-color: #8A2BE2; /* Violeta vibrante */
-    --secondary-color: #E6E6FA; /* Lavanda suave */
-    --text-color: #333;
-    --background-color: #f5f5f5;
-    --card-background: #fff;
+    --primary-color: #1DB954; /* Verde Spotify */
+    --secondary-color: #2e7d32; /* Verde Secundário */
+    --text-color: #FFFFFF;
+    --background-color: #121212; /* Fundo Escuro Principal */
+    --card-background: #282828; /* Fundo de Cards e Elementos */
+    --input-background: #404040;
     --error-color: #F44336;
-    --success-color: #4CAF50;
+    --success-color: #1DB954;
+    --highlight-color: #383838;
 }
 
 body {
@@ -24,20 +30,41 @@ body {
     padding: 20px;
 }
 
-h1 {
+h1, h2 {
     font-size: 24px;
-    color: var(--primary-color);
+    color: var(--text-color);
     margin-bottom: 5px;
-    border-bottom: 2px solid var(--secondary-color);
+    border-bottom: 2px solid var(--highlight-color);
     padding-bottom: 10px;
+    font-weight: bold;
+}
+
+hr {
+    border-top: 1px solid var(--highlight-color);
+    margin: 20px 0;
 }
 
 .data-limite {
     font-style: italic;
-    color: #666;
+    color: #b3b3b3;
     margin-bottom: 5px;
     font-size: 14px;
     text-align: center;
+}
+
+/* --- Estilos para a Pesquisa (NOVO) --- */
+.search-input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    font-size: 16px;
+}
+.search-input::placeholder {
+    color: #b3b3b3;
 }
 
 /* Estilos para a Contagem Regressiva */
@@ -45,7 +72,7 @@ h1 {
     text-align: center;
     font-size: 1.2em;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--text-color);
     padding: 10px;
     margin-bottom: 20px;
     border: 2px solid var(--primary-color);
@@ -56,16 +83,17 @@ h1 {
 .countdown-timer span {
     font-size: 1.5em;
     font-weight: bold;
-    color: #FF4500; /* Laranja vibrante para os números */
+    color: var(--primary-color);
 }
 
 /* Estilos para a Secção Financeira */
 .financial-summary {
-    background-color: var(--secondary-color); /* Fundo lavanda suave */
+    background-color: var(--highlight-color); 
     border-radius: 10px;
     padding: 15px;
     margin: 15px 0;
     border: 1px dashed var(--primary-color);
+    color: var(--text-color);
 }
 
 .financial-summary p {
@@ -79,33 +107,44 @@ h1 {
     color: var(--primary-color);
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--input-background);
     text-align: center;
 }
 
-/* Estilo do Card de Palpite */
+/* Estilo do Card de Palpite (Com Avatar) */
 .palpite-card {
+    display: flex; /* Para alinhar avatar e texto */
+    align-items: center;
     background-color: var(--card-background);
-    border-radius: 15px;
+    border-radius: 10px; 
     padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid #ddd;
+    transition: background-color 0.2s;
+    border: 1px solid var(--highlight-color);
 }
 
 .palpite-card:hover:not(.bloqueado) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: #303030; /* Fundo mais claro no hover */
 }
 
 .palpite-card.selecionado {
     border: 3px solid var(--primary-color);
-    background-color: var(--secondary-color);
+    background-color: var(--highlight-color);
+}
+
+.avatar { /* Estilo do Avatar */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
 }
 
 .palpite-info {
+    flex-grow: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -123,7 +162,7 @@ h1 {
 
 .palpite-atual {
     font-size: 14px;
-    color: var(--primary-color);
+    color: var(--primary-color); /* Palpite em Verde */
     font-weight: 500;
 }
 
@@ -142,18 +181,19 @@ h1 {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4); 
+    background-color: rgba(0,0,0,0.8); 
     padding-top: 60px;
 }
 
 .modal-content {
     background-color: var(--card-background);
+    color: var(--text-color);
     margin: 5% auto; 
     padding: 20px;
     border-radius: 10px;
     width: 90%; 
     max-width: 400px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
 .close-btn {
@@ -181,11 +221,12 @@ h1 {
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 #lista-amigos-secretos button:hover {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
+    color: var(--card-background);
 }
 
 /* Estilo do Bloqueio de Data */
@@ -211,31 +252,39 @@ h1 {
 /* Estilo do Seletor de Utilizador de Teste */
 .user-selector {
     padding: 15px;
-    background-color: #eee;
+    background-color: var(--input-background);
     border-radius: 10px;
     margin-top: 30px;
+    color: var(--text-color);
+}
+
+.user-selector label, .user-selector h4 {
+    color: var(--text-color);
+    font-weight: normal;
+}
+
+.user-selector select {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border: 1px solid var(--highlight-color);
+    padding: 5px;
+    border-radius: 5px;
 }
 
 /* --- Estilos para a Secção de Resultados --- */
 .result-mode-section {
     padding: 15px;
-    background-color: #ffeaea; 
-    border: 1px solid #ff9999;
+    background-color: #202020; 
+    border: 1px solid #404040;
     border-radius: 10px;
     margin: 20px 0;
     text-align: center;
 }
 
-.warning-text {
-    color: var(--error-color);
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
 .primary-btn {
     padding: 10px 20px;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--card-background);
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -245,19 +294,21 @@ h1 {
 }
 
 .primary-btn:hover:not(:disabled) {
-    background-color: #6a1b9a;
+    background-color: #1a8f43;
 }
 
 .primary-btn:disabled {
-    background-color: #ccc;
+    background-color: #404040;
+    color: #888;
     cursor: not-allowed;
 }
 
 .score-card {
+    background-color: var(--card-background);
+    color: var(--text-color);
     text-align: left;
     margin-top: 15px;
     padding: 15px;
-    background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -265,7 +316,7 @@ h1 {
 .score-title {
     font-size: 18px;
     color: var(--primary-color);
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--highlight-color);
     padding-bottom: 8px;
     margin-top: 0;
 }
@@ -288,17 +339,16 @@ h1 {
 }
 
 .acerto {
-    background-color: #e8f5e9; 
+    background-color: #303d32; 
     border-left: 5px solid var(--success-color);
 }
 
 .erro {
-    background-color: #ffebee; 
+    background-color: #403030; 
     border-left: 5px solid var(--error-color);
 }
 
 .detalhe-text {
-    font-size: 12px;
-    color: #555;
+    color: #b3b3b3;
     margin: 2px 0;
 }
