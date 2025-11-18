@@ -3,39 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️ Bolão Amigo Secreto V2.5 Pro</title>
+    <title>🕵️ Bolão Amigo Secreto V3 - GRAFITE</title>
     <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
     <div class="container">
         
         <header class="header">
-            <h1>🕵️ Bolão de Palpites</h1>
+            <h1>🕵️ BOLÃO GRAFITE</h1>
             <div class="header-controls">
                 <div class="user-selector">
                     <label for="user-select">Utilizador Atual:</label>
                     <select id="user-select"></select>
                 </div>
                 <button id="exportBtn" class="primary-btn export-btn">
-                    Exportar Meus Palpites
+                    EXPORTAR DADOS
                 </button>
             </div>
         </header>
 
         <div class="status-grid">
-            <div class="card status-card">
-                <span class="card-icon">⏳</span>
-                <p class="card-title">Prazo de Envio</p>
+            <div class="card status-card countdown-card">
+                <p class="card-title">⏳ PRAZO DE ENVIO</p>
                 <div class="countdown-timer" id="countdown-timer">
                     <span id="days">00</span>d : <span id="hours">00</span>h : <span id="minutes">00</span>m : <span id="seconds">00</span>s
                 </div>
                 <p class="data-limite" id="dataLimiteDisplay">00/00/0000</p>
-                <p id="countdown-finished" style="display: none;">Prazo Encerrado!</p>
+                <p id="countdown-finished" style="display: none;">PRAZO ENCERRADO!</p>
             </div>
 
             <div class="card status-card financial-summary">
-                <span class="card-icon">🏆</span>
-                <p class="card-title">Prémio Total</p>
+                <p class="card-title">🏆 PRÉMIO TOTAL</p>
                 <h3 class="premio-total">R$ <span id="premioTotalDisplay">0.00</span></h3>
                 <p class="financial-detail">Contribuição: R$ <span id="valorPalpiteDisplay">10.00</span> / pessoa</p>
                 <p class="financial-detail">Total Participantes: <span id="numParticipantesDisplay"></span></p>
@@ -44,17 +42,17 @@
 
         <div class="result-mode-section" id="resultModeSection" style="display: none;">
             <p class="warning-text" id="gabaritoWarning">
-                ⚠️ Aviso: Resultados disponíveis se o Gabarito for preenchido!
+                ⚠️ AVISO: RESULTADOS DISPONÍVEIS SE GABARITO FOR PREENCHIDO!
             </p>
             <button id="showResultsBtn" class="primary-btn">
-                Ver a Minha Pontuação
+                VER MINHA PONTUAÇÃO
             </button>
             <div id="myScoreDisplay" class="score-card" style="display: none;"></div>
         </div>
         <hr>
 
-        <h2 class="section-title">Adivinha os Pares</h2>
-        <input type="text" id="search-input" placeholder="🔍 Pesquisar por nome..." class="search-input">
+        <h2 class="section-title">ADIVINHA OS PARES</h2>
+        <input type="text" id="search-input" placeholder="🔍 PESQUISAR..." class="search-input">
         
         <div id="palpite-container">
             </div>
@@ -62,14 +60,14 @@
         <div id="modal-palpite" class="modal">
             <div class="modal-content">
                 <span class="close-btn">&times;</span>
-                <h2>Quem achas que <span id="quemTirouNome"></span> tirou?</h2>
+                <h2>QUEM TIROU <span id="quemTirouNome"></span>?</h2>
                 <div id="lista-amigos-secretos"></div>
             </div>
         </div>
 
         <div id="overlay-bloqueio" class="overlay">
-            <p>🚫 Edição Bloqueada!</p>
-            <p>O prazo para palpites terminou.</p>
+            <p>🚫 EDIÇÃO BLOQUEADA!</p>
+            <p>PRAZO TERMINADO.</p>
         </div>
     </div>
 
