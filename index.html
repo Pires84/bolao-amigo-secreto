@@ -3,33 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️ Bolão Amigo Secreto V2</title>
+    <title>🕵️ Bolão Amigo Secreto V2.5 Pro</title>
     <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
     <div class="container">
-        <h1>🕵️ Bolão de Palpites - Amigo Secreto</h1>
         
-        <p class="data-limite">
-            *Edição permitida até: <span id="dataLimiteDisplay"></span>*
-        </p>
-        <div id="countdown-timer" class="countdown-timer">
-            Tempo Restante: <span id="days">00</span>d : 
-            <span id="hours">00</span>h : 
-            <span id="minutes">00</span>m : 
-            <span id="seconds">00</span>s
+        <header class="header">
+            <h1>🕵️ Bolão de Palpites</h1>
+            <div class="header-controls">
+                <div class="user-selector">
+                    <label for="user-select">Utilizador Atual:</label>
+                    <select id="user-select"></select>
+                </div>
+                <button id="exportBtn" class="primary-btn export-btn">
+                    Exportar Meus Palpites
+                </button>
+            </div>
+        </header>
+
+        <div class="status-grid">
+            <div class="card status-card">
+                <span class="card-icon">⏳</span>
+                <p class="card-title">Prazo de Envio</p>
+                <div class="countdown-timer" id="countdown-timer">
+                    <span id="days">00</span>d : <span id="hours">00</span>h : <span id="minutes">00</span>m : <span id="seconds">00</span>s
+                </div>
+                <p class="data-limite" id="dataLimiteDisplay">00/00/0000</p>
+                <p id="countdown-finished" style="display: none;">Prazo Encerrado!</p>
+            </div>
+
+            <div class="card status-card financial-summary">
+                <span class="card-icon">🏆</span>
+                <p class="card-title">Prémio Total</p>
+                <h3 class="premio-total">R$ <span id="premioTotalDisplay">0.00</span></h3>
+                <p class="financial-detail">Contribuição: R$ <span id="valorPalpiteDisplay">10.00</span> / pessoa</p>
+                <p class="financial-detail">Total Participantes: <span id="numParticipantesDisplay"></span></p>
+            </div>
         </div>
-        <p id="countdown-finished" style="display: none; color: red; font-weight: bold; text-align: center;">
-            O prazo para palpites terminou!
-        </p>
-        
-        <div class="financial-summary">
-            <p>💰 **Valor por Palpite:** R$ <span id="valorPalpiteDisplay"></span></p>
-            <p>👥 **Participantes:** <span id="numParticipantesDisplay"></span></p>
-            <p>🎯 **Palpites por Pessoa:** <span id="numPalpitesDisplay"></span></p>
-            <h3 class="premio-total">🏆 Prémio Total Estimado: R$ <span id="premioTotalDisplay"></span></h3>
-        </div>
-        <hr> 
 
         <div class="result-mode-section" id="resultModeSection" style="display: none;">
             <p class="warning-text" id="gabaritoWarning">
@@ -38,16 +49,13 @@
             <button id="showResultsBtn" class="primary-btn">
                 Ver a Minha Pontuação
             </button>
-            <div id="myScoreDisplay" class="score-card" style="display: none;">
-                </div>
+            <div id="myScoreDisplay" class="score-card" style="display: none;"></div>
         </div>
-        <hr id="resultDivider" style="display: none;">
+        <hr>
 
-
-        <h2>Registo de Palpites</h2>
-
-        <input type="text" id="search-input" placeholder="🔍 Pesquisar Participante..." class="search-input">
-
+        <h2 class="section-title">Adivinha os Pares</h2>
+        <input type="text" id="search-input" placeholder="🔍 Pesquisar por nome..." class="search-input">
+        
         <div id="palpite-container">
             </div>
 
@@ -55,22 +63,13 @@
             <div class="modal-content">
                 <span class="close-btn">&times;</span>
                 <h2>Quem achas que <span id="quemTirouNome"></span> tirou?</h2>
-                <div id="lista-amigos-secretos">
-                    </div>
+                <div id="lista-amigos-secretos"></div>
             </div>
         </div>
 
         <div id="overlay-bloqueio" class="overlay">
             <p>🚫 Edição Bloqueada!</p>
             <p>O prazo para palpites terminou.</p>
-        </div>
-
-        <div class="user-selector">
-            <label for="user-select">Mudar Utilizador (Teste de Privacidade):</label>
-            <select id="user-select"></select>
-            <button id="exportBtn" class="primary-btn export-btn" style="margin-top: 10px; width: 100%;">
-                Exportar Meus Palpites (Dados Brutos)
-            </button>
         </div>
     </div>
 
