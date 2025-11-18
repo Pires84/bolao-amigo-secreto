@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕵️ Bolão Amigo Secreto V1</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>🕵️ Bolão de Palpites - Amigo Secreto</h1>
+        
+        <p class="data-limite">
+            *Edição permitida até: <span id="dataLimiteDisplay"></span>*
+        </p>
+        <div id="countdown-timer" class="countdown-timer">
+            Tempo Restante: <span id="days">00</span>d : 
+            <span id="hours">00</span>h : 
+            <span id="minutes">00</span>m : 
+            <span id="seconds">00</span>s
+        </div>
+        <p id="countdown-finished" style="display: none; color: red; font-weight: bold; text-align: center;">
+            O prazo para palpites terminou!
+        </p>
+        
+        <div class="financial-summary">
+            <p>💰 **Valor por Palpite:** R$ <span id="valorPalpiteDisplay"></span></p>
+            <p>👥 **Participantes:** <span id="numParticipantesDisplay"></span></p>
+            <p>🎯 **Palpites por Pessoa:** <span id="numPalpitesDisplay"></span></p>
+            <h3 class="premio-total">🏆 Prémio Total Estimado: R$ <span id="premioTotalDisplay"></span></h3>
+        </div>
+        <hr> 
+
+        <div class="result-mode-section" id="resultModeSection" style="display: none;">
+            <p class="warning-text" id="gabaritoWarning">
+                ⚠️ Aviso: Resultados disponíveis se o Gabarito for preenchido!
+            </p>
+            <button id="showResultsBtn" class="primary-btn">
+                Ver a Minha Pontuação
+            </button>
+            <div id="myScoreDisplay" class="score-card" style="display: none;">
+                </div>
+        </div>
+        <hr id="resultDivider" style="display: none;">
+
+
+        <h2 style="color: #555; margin-top: 30px;">Registo de Palpites</h2>
+        <div id="palpite-container">
+            </div>
+
+        <div id="modal-palpite" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Quem achas que <span id="quemTirouNome"></span> tirou?</h2>
+                <div id="lista-amigos-secretos">
+                    </div>
+            </div>
+        </div>
+
+        <div id="overlay-bloqueio" class="overlay">
+            <p>🚫 Edição Bloqueada!</p>
+            <p>O prazo para palpites terminou.</p>
+        </div>
+
+        <div class="user-selector">
+            <label for="user-select">Mudar Utilizador (Teste de Privacidade):</label>
+            <select id="user-select"></select>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
