@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️ Bolão Amigo Secreto V1</title>
+    <title>🕵️ Bolão Amigo Secreto V2</title>
     <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
@@ -44,7 +44,10 @@
         <hr id="resultDivider" style="display: none;">
 
 
-        <h2 style="color: #555; margin-top: 30px;">Registo de Palpites</h2>
+        <h2>Registo de Palpites</h2>
+
+        <input type="text" id="search-input" placeholder="🔍 Pesquisar Participante..." class="search-input">
+
         <div id="palpite-container">
             </div>
 
@@ -65,6 +68,9 @@
         <div class="user-selector">
             <label for="user-select">Mudar Utilizador (Teste de Privacidade):</label>
             <select id="user-select"></select>
+            <button id="exportBtn" class="primary-btn export-btn" style="margin-top: 10px; width: 100%;">
+                Exportar Meus Palpites (Dados Brutos)
+            </button>
         </div>
     </div>
 
